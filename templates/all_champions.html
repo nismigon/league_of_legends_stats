@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-3 mb-3">
+    <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-8 d-flex">
+            <input type="text" class="form-control" placeholder="Select a champion">
+            <button class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="max-width: 100vw">
+    {% for champion in list_champion %}
+        <div class="col-1 m-0 p-0">
+            <a href="/champion/{{ champion }}">
+                <div class="text-center hover-overlay bg-image hover-zoom">
+                    <img
+                            src="{{ url_for('static', filename='dragontail-11.24.1/img/champion/tiles/' + champion + '_0.jpg') }}"
+                            class="rounded w-100 h-100 m-0 p-0"
+                            alt="{{ champion }}"
+                    />
+                    <div class="mask d-flex justify-content-center align-items-center h-100">
+                        <div class="text-white">{{ champion }}</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
