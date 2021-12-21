@@ -43,14 +43,20 @@
             <div id="carouselSkins" class="carousel slide" data-bs-ride="carousel">
             <h3>Skins</h3>
               <div class="carousel-inner">
-                  {% for skin in skins_list %}
+                  {% for skin in informations["skins"] %}
                       {% if loop.index == 1 %}
                           <div class="carousel-item active">
-                              <img src="{{ url_for('static', filename="dragontail-11.24.1/img/champion/splash/" + skin) }}" class="d-block w-100" alt="...">
+                              <img src="{{ url_for('static', filename="dragontail-11.24.1/img/champion/splash/" + skin["file"]) }}" class="d-block w-100" alt="...">
+                              <div class="carousel-caption d-none d-md-block bg-dark rounded-9 d-flex align-items-center justify-content-center">
+                                  <h4>Skin de base</h4>
+                              </div>
                           </div>
                       {% else %}
                           <div class="carousel-item">
-                            <img src="{{ url_for('static', filename="dragontail-11.24.1/img/champion/splash/" + skin) }}" class="d-block w-100" alt="...">
+                            <img src="{{ url_for('static', filename="dragontail-11.24.1/img/champion/splash/" + skin["file"]) }}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block bg-dark rounded-9 d-flex align-items-center justify-content-center">
+                                <h4>{{ skin["name"] }}</h4>
+                            </div>
                           </div>
                       {% endif %}
                   {% endfor %}

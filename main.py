@@ -12,13 +12,6 @@ def get_champion_list():
     return list_champ
 
 
-def get_skin_list(champion_name, list_skin_number):
-    list_skin = []
-    for skin_number in list_skin_number:
-        list_skin.append(champion_name + "_" + str(skin_number) + ".jpg")
-    return list_skin
-
-
 def get_info(champion_name):
     data = {}
     with open("./static/dragontail-11.24.1/11.24.1/data/fr_FR/champion/" + champion_name + ".json", encoding='utf-8') \
@@ -29,7 +22,10 @@ def get_info(champion_name):
         data["lore"] = data_in_file["data"][champion_name]["lore"]
         data["skins"] = []
         for skin_info in data_in_file["data"][champion_name]["skins"]:
-            data["skins"].append(skin_info["num"])
+            data["skins"].append({
+                "name": skin_info["name"],
+                "file": champion_name + "_" + str(skin_info["num"]) + ".jpg"
+            })
         data["spells"] = []
         for spell_info in data_in_file["data"][champion_name]["spells"]:
             tmp_struct = {
@@ -57,7 +53,6 @@ for champion in list_champion:
 def show_specific_champion(champion_name):
     return render_template("specific_champion.html",
                            champion=champion_name,
-                           skins_list=get_skin_list(champion_name, data[champion_name]["skins"]),
                            informations=data[champion_name])
 
 
