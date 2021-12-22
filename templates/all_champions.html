@@ -5,29 +5,62 @@
 <div class="container mt-3 mb-3">
     <div class="row height d-flex justify-content-center align-items-center">
         <div class="col-md-8 d-flex">
-            <input type="text" class="form-control" placeholder="Select a champion">
+            <input type="text" class="form-control" placeholder="Select a champion" id="filter" onchange="onFilter()">
             <button class="btn btn-primary">Search</button>
         </div>
     </div>
 </div>
 
-<div class="row" style="max-width: 99.5vw">
-    {% for champion in list_champion %}
-        <div class="col-1 m-0 p-0">
-            <a href="/champion/{{ champion }}">
-                <div class="text-center hover-overlay bg-image hover-zoom">
-                    <img
-                            src="{{ url_for('static', filename='dragontail-11.24.1/img/champion/tiles/' + champion + '_0.jpg') }}"
-                            class="rounded w-100 h-100 m-0 p-0"
-                            alt="{{ champion }}"
-                    />
-                    <div class="mask d-flex justify-content-center align-items-center h-100">
-                        <div class="text-white">{{ champion }}</div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    {% endfor %}
-</div>
+<div class="row" style="max-width: 99.5vw" id="champion_list"></div>
+
+<script>
+    let filter = "";
+
+    function render() {
+        let list_champ = {{ list_champion|tojson }};
+        let rootElement = document.getElementById("champion_list");
+        rootElement.textContent = "";
+        for (const champion of list_champ) {
+            if (filter === "" || champion.toLowerCase().includes(filter.toLowerCase())) {
+                // Hover effect
+                let hover = document.createElement("div");
+                hover.setAttribute("class", "text-white");
+                hover.innerText = champion;
+                let hover_container = document.createElement("div");
+                hover_container.setAttribute("class", "mask d-flex justify-content-center align-items-center h-100");
+                hover_container.appendChild(hover);
+                // Image
+                let image = document.createElement("img");
+                image.setAttribute("src", "{{ url_for('static', filename='dragontail-11.24.1/img/champion/tiles/') }}" + champion + '_0.jpg');
+                image.setAttribute("class", "rounded w-100 h-100 m-0 p-0");
+                image.setAttribute("alt", champion);
+                // Image and hover container
+                let image_and_hover_container = document.createElement("div");
+                image_and_hover_container.setAttribute("class", "text-center hover-overlay bg-image hover-zoom")
+                image_and_hover_container.appendChild(image);
+                image_and_hover_container.appendChild(hover_container);
+                // Anchor container
+                let anchor_container = document.createElement("a");
+                anchor_container.setAttribute("href", "/champion/" + champion);
+                anchor_container.appendChild(image_and_hover_container);
+                // Div container for anchor
+                let div_anchor_container = document.createElement("div");
+                div_anchor_container.setAttribute("class", "col-1 m-0 p-0");
+                div_anchor_container.appendChild(anchor_container);
+                // Add the div container for anchor to root element
+                rootElement.appendChild(div_anchor_container);
+            }
+        }
+    }
+
+    function onFilter() {
+        const input = document.getElementById("filter");
+        filter = input.value;
+        render();
+    }
+
+    render();
+
+</script>
 
 {% endblock %}
