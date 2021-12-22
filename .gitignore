@@ -1,3 +1,5 @@
 venv/
 dragontail-*/
+dragontail-*
 .idea/
+__pycache__/

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="m-2">
+        <div class="container alert alert-dark mt-3 text-black-50">
+            <h2>{{ champion + ", " + informations["title"] }}</h2>
+        </div>
+        <div class="container alert alert-dark  text-black-50">
+            <h3>Histoire</h3>
+            <p>{{ informations["lore"] }}</p>
+        </div>
+        <div class="container alert alert-dark  text-black-50">
+            <div class="row">
+                <h3>Sorts</h3>
+            </div>
+            <div class="row">
+                <div class="col-2 d-flex justify-content-center align-items-center">
+                    <img src="{{ url_for("static", filename="dragontail-11.24.1/11.24.1/img/passive/" + informations["passive"]["image"]) }}"
+                         class="d-block" alt="...">
+
+                </div>
+                <div class="col-10">
+                    <h4>{{ informations["passive"]["name"] }}</h4>
+                    <div>{{ informations["passive"]["description"]|safe }}</div>
+                </div>
+            </div>
+            {% for spell in informations["spells"] %}
+                <hr />
+                <div class="row">
+                    <div class="col-2 d-flex justify-content-center align-items-center">
+                        <img src="{{ url_for("static", filename="dragontail-11.24.1/11.24.1/img/spell/" + spell["image"]) }}"
+                             class="d-block" alt="...">
+
+                    </div>
+                    <div class="col-10">
+                        <h4>{{ spell["name"] }}</h4>
+                        <div>{{ spell["description"]|safe }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="container alert alert-dark text-black-50">
+            <div id="carouselSkins" class="carousel slide" data-bs-ride="carousel">
+            <h3>Skins</h3>
+              <div class="carousel-inner">
+                  {% for skin in informations["skins"] %}
+                      {% if loop.index == 1 %}
+                          <div class="carousel-item active">
+                              <img src="{{ url_for('static', filename="dragontail-11.24.1/img/champion/splash/" + skin["file"]) }}" class="d-block w-100" alt="...">
+                              <div class="carousel-caption d-none d-md-block bg-dark rounded-9 d-flex align-items-center justify-content-center">
+                                  <h4>Skin de base</h4>
+                              </div>
+                          </div>
+                      {% else %}
+                          <div class="carousel-item">
+                            <img src="{{ url_for('static', filename="dragontail-11.24.1/img/champion/splash/" + skin["file"]) }}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block bg-dark rounded-9 d-flex align-items-center justify-content-center">
+                                <h4>{{ skin["name"] }}</h4>
+                            </div>
+                          </div>
+                      {% endif %}
+                  {% endfor %}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselSkins" data-bs-slide="prev">
+                <span class="display-4" aria-hidden="true"><</span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselSkins" data-bs-slide="next">
+                <span class="display-4" aria-hidden="true">></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
