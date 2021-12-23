@@ -32,6 +32,9 @@ class DataDragon:
         self.version = versions[0]
         self.url = "https://ddragon.leagueoflegends.com/cdn/dragontail-" + self.version + ".tgz"
 
+    def get_version(self):
+        return self.version
+
     def force_download(self):
         download_file(self.url)
         file = tarfile.open("server/static/dragontail-" + self.version + ".tgz")

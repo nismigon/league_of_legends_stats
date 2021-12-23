@@ -3,11 +3,10 @@ import json
 import os
 
 
-def get_info(champion_name):
+def get_info(champion_name, data_dragon_version):
     data = {}
-    with open("./server/static/dragontail-11.24.1/11.24.1/data/fr_FR/champion/" + champion_name + ".json",
-              encoding='utf-8') \
-            as f:
+    with open("./server/static/dragontail-" + data_dragon_version + "/" + data_dragon_version + "/data/fr_FR/champion/"
+              + champion_name + ".json", encoding='utf-8') as f:
         data_in_file = json.load(f)
         data["name"] = data_in_file["data"][champion_name]["name"]
         data["title"] = data_in_file["data"][champion_name]["title"]
@@ -34,9 +33,10 @@ def get_info(champion_name):
     return data
 
 
-def get_champion_list():
+def get_champion_list(data_dragon_version):
     list_champ = []
-    file_list = os.listdir("./server/static/dragontail-11.24.1/11.24.1/data/fr_FR/champion")
+    file_list = os.listdir("./server/static/dragontail-" + data_dragon_version + "/" + data_dragon_version
+                           + "/data/fr_FR/champion")
     for file in file_list:
         list_champ.append(file.split(".")[0])
     return list_champ
@@ -44,23 +44,27 @@ def get_champion_list():
 
 class FlaskServer:
 
-    def __init__(self):
+    def __init__(self, data_dragon_version):
         self.app = Flask(__name__)
+        self.data_dragon_version = data_dragon_version
 
-        list_champion = get_champion_list()
+        list_champion = get_champion_list(self.data_dragon_version)
         data = {}
         for champion in list_champion:
-            data[champion] = get_info(champion)
+            data[champion] = get_info(champion, self.data_dragon_version)
 
         @self.app.route("/champion/<champion_name>")
         def show_specific_champion(champion_name):
             return render_template("specific_champion.html",
                                    champion=champion_name,
-                                   informations=data[champion_name])
+                                   informations=data[champion_name],
+                                   data_dragon_version=data_dragon_version)
 
         @self.app.route("/champions")
         def show_all_champions():
-            return render_template("all_champions.html", list_champion=list_champion)
+            return render_template("all_champions.html",
+                                   list_champion=list_champion,
+                                   data_dragon_version=data_dragon_version)
 
         @self.app.route("/")
         def home():

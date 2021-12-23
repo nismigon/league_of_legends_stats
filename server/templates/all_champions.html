@@ -31,7 +31,7 @@
                 hover_container.appendChild(hover);
                 // Image
                 let image = document.createElement("img");
-                image.setAttribute("src", "{{ url_for('static', filename='dragontail-11.24.1/img/champion/tiles/') }}" + champion + '_0.jpg');
+                image.setAttribute("src", "{{ url_for('static', filename='dragontail-' + data_dragon_version + '/img/champion/tiles/') }}" + champion + '_0.jpg');
                 image.setAttribute("class", "rounded w-100 h-100 m-0 p-0");
                 image.setAttribute("alt", champion);
                 // Image and hover container
